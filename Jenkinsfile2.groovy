@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "mguazzardo/curso-jenkins"
+    registry = "nicolas/curso-jenkins"
     registryCredential = 'dockerhub'
   }
  agent any
