@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "nicolas/curso-jenkins"
+    registry = "nicolasmartin28/curso-jenkins"
     registryCredential = 'dockerhub'
   }
  agent any
@@ -9,7 +9,7 @@ pipeline {
     stage('Build Docker Image') {
             steps {
                 script {
-                    app = docker.build("mguazzardo/flaskapi:latest")
+                    app = docker.build("nicolasmartin28/flaskapi:latest")
                 }
             }
         }
@@ -18,7 +18,7 @@ pipeline {
       steps{
         
         sh '''
-        docker run -d --name=flaskapi -p 30080:5000 mguazzardo/flaskapi
+        docker run -d --name=flaskapi -p 30080:5000 nicolasmartin28/flaskapi
         
            '''
         }
@@ -52,17 +52,6 @@ pipeline {
             }
         }
     
-    stage ('Deploy k8s') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'ssh-key', usernameVariable: 'USUARIO', passwordVariable: 'CONTRASENIA')]) {
-          sh '''
-           sshpass -p ${CONTRASENIA} ssh -o StrictHostKeyChecking=no ${USUARIO}@54.153.2.192 'kubectl create deployment flaskapi --image=mguazzardo/flaskapi -n flaskapi'
-          '''
-        }
-        
-        
-      }
-    }
     
     
     }   
